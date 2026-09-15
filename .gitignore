@@ -1,0 +1,4 @@
+node_modules/
+dist/
+*.eidos-plugin
+src/generated/

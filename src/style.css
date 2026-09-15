@@ -1,0 +1,108 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#app,
+main {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+body {
+  background: var(--eidos-background, #fff);
+  color: var(--eidos-foreground, #232728);
+  font: 13px var(--eidos-font-family, sans-serif);
+  color-scheme: var(--eidos-color-scheme, light);
+}
+main {
+  display: flex;
+  flex-direction: column;
+}
+button,
+select {
+  font: inherit;
+  color: inherit;
+  border: 1px solid var(--eidos-border, #ddd);
+  border-radius: 5px;
+  background: var(--eidos-background, #fff);
+  padding: 5px 8px;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+button:hover:enabled {
+  background: color-mix(
+    in srgb,
+    var(--eidos-foreground, #222) 6%,
+    var(--eidos-background, #fff)
+  );
+}
+:focus-visible {
+  outline: 2px solid var(--eidos-accent, #247c91);
+  outline-offset: 2px;
+}
+.canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.map {
+  position: absolute;
+  inset: 0;
+}
+.empty {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 10px 14px;
+  max-width: calc(100% - 32px);
+  width: max-content;
+  background: var(--eidos-background, #fff);
+  border: 1px solid var(--eidos-border, #ddd);
+  border-radius: 6px;
+}
+.message {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--eidos-border, #ddd);
+}
+.maplibregl-popup-content {
+  background: var(--eidos-background, #fff);
+  color: var(--eidos-foreground, #232728);
+  font-family: var(--eidos-font-family, sans-serif);
+  padding: 12px 20px 10px 10px;
+}
+.record-link {
+  max-width: 240px;
+  white-space: normal;
+  text-align: left;
+}
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+}
+
+.fit-control {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}
+.map-messages {
+  position: absolute;
+  bottom: 30px;
+  left: 10px;
+  max-width: calc(100% - 60px);
+  z-index: 1;
+}
+.message {
+  background: var(--eidos-background, #fff);
+}

@@ -1,0 +1,58 @@
+{
+  "apiVersion": 1,
+  "id": "eidos.map",
+  "name": "Map",
+  "version": "0.1.0",
+  "icon": {
+    "paths": ["M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z", "M9 3v15", "M15 6v15"]
+  },
+  "browser": {
+    "workers": true,
+    "networkOrigins": ["https://tiles.openfreemap.org"]
+  },
+  "views": [
+    {
+      "id": "map",
+      "title": "Map",
+      "entry": "./src/view.tsx",
+      "context": "table",
+      "access": "read",
+      "configuration": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "string",
+            "title": "Latitude",
+            "default": "",
+            "x-field": true
+          },
+          "longitude": {
+            "type": "string",
+            "title": "Longitude",
+            "default": "",
+            "x-field": true
+          },
+          "label": {
+            "type": "string",
+            "title": "Title",
+            "default": "",
+            "x-field": true
+          },
+          "basemap": {
+            "type": "string",
+            "title": "Basemap",
+            "default": "online",
+            "enum": ["online", "offline"],
+            "description": "Online uses OpenFreeMap. Offline shows world outlines without street detail."
+          }
+        }
+      }
+    }
+  ],
+  "placements": [
+    {
+      "location": "table/view",
+      "view": "map"
+    }
+  ]
+}

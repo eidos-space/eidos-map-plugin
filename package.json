@@ -1,0 +1,30 @@
+{
+  "name": "@eidos.space/plugin-map",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "vitest run",
+    "check": "node scripts/prepare-worker.mjs && tsc --noEmit",
+    "pack:plugin": "npm run check && node scripts/pack.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "6.9.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  },
+  "devDependencies": {
+    "@eidos.space/eidos-file": "3.1.0",
+    "esbuild": "0.28.1",
+    "typescript": "5.8.3",
+    "@types/react": "18.3.28",
+    "@types/react-dom": "18.3.7",
+    "@types/topojson-client": "3.1.5",
+    "@types/topojson-specification": "1.0.5",
+    "vitest": "4.1.11"
+  }
+}
