@@ -36,6 +36,8 @@ Requires Node.js 22 or later. The standalone build emits the standard gzip/JSON 
 
 ## Release
 
+MapLibre 6.9.1's worker URL handling is adapted at build time for Eidos's opaque iframe: the already-bundled local Blob worker is created directly as a classic worker, without a cross-origin fetch/import round trip. The adapter asserts the pinned implementation; review it when upgrading MapLibre. Host CSP and network permissions remain unchanged.
+
 Update `package.json`, `plugin.json` and `RELEASE_NOTES.md` together. Push the release commit to `main`, wait for its build to pass, then create and push the matching lightweight `v<version>` tag. The workflow tests, checks types, packages and publishes a GitHub prerelease with the committed release notes and checksum. Published tags are never moved.
 
 ## Credits

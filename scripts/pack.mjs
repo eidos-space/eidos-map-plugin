@@ -16,6 +16,20 @@ for (const view of manifest.views) {
     define: { "process.env.NODE_ENV": '"production"' },
     minify: true, legalComments: "inline", metafile: true,
     loader: { ".woff2": "dataurl", ".png": "dataurl", ".svg": "dataurl" },
+    plugins: [{
+      name: "maplibre-opaque-frame-worker",
+      setup(builder) {
+        builder.onLoad({ filter: /maplibre-gl\.mjs$/ }, async ({ path }) => {
+          const contents = await readFile(path, "utf8")
+          // MapLibre 6 treats opaque-frame Blob URLs as cross-origin and tries
+          // to fetch/import them again. Our worker is already a local bundled
+          // classic Blob, so create it directly, as MapLibre 5 did.
+          const check = "new URL(e,t.href).origin!==t.origin"
+          assert.equal(contents.split(check).length, 2, "Review worker adapter when upgrading MapLibre")
+          return { contents: contents.replace(check, '!e.startsWith("blob:")&&' + check), loader: "js" }
+        })
+      },
+    }],
   })
   for (const output of Object.values(result.metafile.outputs))
     assert(!output.imports.some(item => item.external && !item.path.startsWith("data:")), "Package must not depend on external code/assets")

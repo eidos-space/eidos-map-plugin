@@ -19,7 +19,9 @@ import "./style.css"
 import workerSource from "./generated/maplibre-worker"
 
 // Keep workers self-contained in the plugin sandbox; no CDN or sibling files.
-maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([workerSource], { type: "text/javascript" })))
+// MapLibre selects classic workers for .cjs URLs. The fragment preserves the
+// Blob URL while avoiding module-worker origin restrictions in opaque iframes.
+maplibregl.setWorkerUrl(`${URL.createObjectURL(new Blob([workerSource], { type: "text/javascript" }))}#.cjs`)
 
 type Config = {
   latitude: string
