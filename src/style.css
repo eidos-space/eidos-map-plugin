@@ -55,18 +55,42 @@ button:hover:enabled {
   position: absolute;
   inset: 0;
 }
-.empty {
+.map-empty-card {
   position: absolute;
-  top: 20px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   margin: 0;
-  padding: 10px 14px;
-  max-width: calc(100% - 32px);
-  width: max-content;
+  padding: 24px 28px;
+  width: min(340px, calc(100% - 48px));
   background: var(--eidos-background, #fff);
   border: 1px solid var(--eidos-border, #ddd);
-  border-radius: 6px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+}
+.map-empty-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--eidos-accent, #247c91);
+  margin-bottom: 12px;
+  opacity: 0.85;
+}
+.map-empty-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--eidos-foreground, #232728);
+  margin-bottom: 6px;
+}
+.map-empty-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--eidos-muted, #777);
+  margin: 0;
 }
 .message {
   padding: 8px 12px;
@@ -79,12 +103,46 @@ button:hover:enabled {
   background: var(--eidos-background, #fff);
   color: var(--eidos-foreground, #232728);
   font-family: var(--eidos-font-family, sans-serif);
-  padding: 12px 20px 10px 10px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--eidos-border, #e5e5ea);
 }
-.record-link {
+.map-popup-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
   max-width: 240px;
-  white-space: normal;
-  text-align: left;
+}
+.map-popup-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--eidos-foreground, #232728);
+  word-break: break-word;
+}
+.map-popup-coords {
+  font-size: 11px;
+  color: var(--eidos-muted, #888);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.map-popup-btn {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--eidos-border, #ddd);
+  background: var(--eidos-background, #fff);
+  color: var(--eidos-accent, #247c91);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+.map-popup-btn:hover {
+  background: color-mix(in srgb, var(--eidos-accent, #247c91) 10%, var(--eidos-background, #fff));
+  border-color: var(--eidos-accent, #247c91);
 }
 .maplibregl-ctrl-attrib {
   font-size: 10px;

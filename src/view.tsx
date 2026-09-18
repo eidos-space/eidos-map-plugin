@@ -297,15 +297,29 @@ function MapView({ table }: { table: TableContext }) {
       const selected = event.features?.[0]
       if (!selected || selected.geometry.type !== "Point") return
       popup.current?.remove()
+      const card = document.createElement("div")
+      card.className = "map-popup-card"
+
+      const title = document.createElement("div")
+      title.className = "map-popup-title"
+      title.textContent = String(selected.properties.label || "Record")
+
+      const coords = document.createElement("div")
+      coords.className = "map-popup-coords"
+      const [lng, lat] = selected.geometry.coordinates as [number, number]
+      coords.textContent = `${lat.toFixed(4)}°, ${lng.toFixed(4)}°`
+
       const button = document.createElement("button")
-      button.className = "record-link"
-      button.textContent = String(selected.properties.label || "Open record")
+      button.className = "map-popup-btn"
+      button.textContent = "Open record →"
       button.addEventListener("click", () => {
         void table.openRecord(String(selected.properties.id)).catch(report)
       })
-      popup.current = new maplibregl.Popup({ closeOnClick: true })
+
+      card.append(title, coords, button)
+      popup.current = new maplibregl.Popup({ closeOnClick: true, offset: 10 })
         .setLngLat(selected.geometry.coordinates as [number, number])
-        .setDOMContent(button)
+        .setDOMContent(card)
         .addTo(instance)
     })
     for (const layer of ["points", "clusters"]) {
@@ -408,9 +422,25 @@ function MapView({ table }: { table: TableContext }) {
           )}
         </div>
         {!configured && (
-          <p className="empty">
-            Choose latitude and longitude fields in the host’s View settings.
-          </p>
+          <div className="map-empty-card">
+            <svg
+              className="map-empty-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+              <line x1="9" y1="3" x2="9" y2="18" />
+              <line x1="15" y1="6" x2="15" y2="21" />
+            </svg>
+            <div className="map-empty-title">Location Fields Required</div>
+            <div className="map-empty-desc">
+              Select the Latitude and Longitude fields in the host’s View settings to map your records.
+            </div>
+          </div>
         )}
       </div>
     </main>
