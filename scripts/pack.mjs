@@ -39,7 +39,7 @@ for (const view of manifest.views) {
   if (css) code = `const style=document.createElement('style');style.textContent=${JSON.stringify(css)};document.head.append(style);\n${code}`
   modules[view.entry] = code
 }
-const envelope = { format: 1, manifest, modules }
+const envelope = { format: 2, manifest, modules }
 const raw = Buffer.from(JSON.stringify(envelope))
 assert(raw.length <= 16 * 1024 * 1024, "Package exceeds host limit")
 const bytes = gzipSync(raw, { level: 9 })

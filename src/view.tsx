@@ -447,9 +447,10 @@ function MapView({ table }: { table: TableContext }) {
   )
 }
 const mount: Mount = (ctx, element) => {
-  if (ctx.binding.kind !== "table") throw new Error("Map requires a table view")
+  const table = ctx.table
+  if (!table) throw new Error("Map requires a table view")
   const root = createRoot(element)
-  root.render(<MapView table={ctx.binding.table} />)
+  root.render(<MapView table={table} />)
   return { dispose: () => root.unmount() }
 }
 export default mount

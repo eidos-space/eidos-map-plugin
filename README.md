@@ -4,9 +4,9 @@ A React + MapLibre GL JS table view for Eidos Lite.
 
 ## Install
 
-This is a preview requiring an Eidos Lite development build with table plugins, host-rendered view configuration and plugin icons. It does not claim compatibility with the currently published stable Lite release.
+Map 0.2.0 requires Eidos Lite 0.19.0 or later and plugin API 2.0.0.
 
-1. Download `eidos.map-0.1.0.eidos-plugin` from [GitHub Releases](https://github.com/eidos-space/eidos-map-plugin/releases).
+1. Download `eidos.map-0.2.0.eidos-plugin` from [GitHub Releases](https://github.com/eidos-space/eidos-map-plugin/releases).
 2. In Eidos Lite, open **Plugins → Install plugin…** and select the downloaded file.
 3. Enable Map in your Space, open an `.eidos` table and choose **New view → Map**.
 
@@ -32,13 +32,13 @@ npm test
 npm run pack:plugin
 ```
 
-Requires Node.js 22 or later. The standalone build emits the standard gzip/JSON `.eidos-plugin` envelope, bundled JavaScript/CSS and `SHA256SUMS` into `dist/`. The SDK import is type-only; React and MapLibre are bundled per plugin. Until the SDK is published, its MIT-licensed type snapshot is included under `vendor/plugin-sdk`. No Eidos repository checkout is needed to build.
+Requires Node.js 22 or later. The standalone build emits the standard gzip/JSON `.eidos-plugin` envelope, bundled JavaScript/CSS and `SHA256SUMS` into `dist/`. The SDK import is type-only; React and MapLibre are bundled per plugin. The build uses published `@eidos.space/plugin-sdk` and `@eidos.space/plugin-tools` 0.4.0. No Eidos repository checkout is needed to build.
 
 ## Release
 
 MapLibre 6.9.1's worker URL handling is adapted at build time for Eidos's opaque iframe: the already-bundled local Blob worker is created directly as a classic worker, without a cross-origin fetch/import round trip. The adapter asserts the pinned implementation; review it when upgrading MapLibre. Host CSP and network permissions remain unchanged.
 
-Update `package.json`, `plugin.json` and `RELEASE_NOTES.md` together. Push the release commit to `main`, wait for its build to pass, then create and push the matching lightweight `v<version>` tag. The workflow tests, checks types, packages and publishes a GitHub prerelease with the committed release notes and checksum. Published tags are never moved.
+Update `package.json`, `plugin.json` and `RELEASE_NOTES.md` together. Push the release commit to `main`, wait for its build to pass, then create and push the matching lightweight `v<version>` tag. The workflow tests, checks types, packages and publishes a GitHub Release with the committed release notes and checksum. Published tags are never moved.
 
 ## Credits
 
