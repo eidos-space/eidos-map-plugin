@@ -10,8 +10,8 @@ import type { Topology, GeometryCollection } from "topojson-specification"
 import countries from "world-atlas/countries-110m.json"
 import type {
   Mount,
-  TableContext,
-  TableViewSnapshot,
+  EidosTable,
+  EidosTableSnapshot,
 } from "@eidos.space/plugin-sdk"
 import { coordinate, longitudeBounds, unwrapRing } from "./coordinates"
 import "maplibre-gl/dist/maplibre-gl.css"
@@ -94,7 +94,7 @@ function offlineStyle(): StyleSpecification {
     ],
   }
 }
-function initialConfig(snapshot: TableViewSnapshot): Config {
+function initialConfig(snapshot: EidosTableSnapshot): Config {
   const saved = snapshot.view.properties?.plugin as Partial<Config> | undefined
   return {
     latitude: saved?.latitude ?? "",
@@ -103,12 +103,12 @@ function initialConfig(snapshot: TableViewSnapshot): Config {
     basemap: saved?.basemap === "offline" ? "offline" : "online",
   }
 }
-function MapView({ table }: { table: TableContext }) {
+function MapView({ table }: { table: EidosTable }) {
   const container = useRef<HTMLDivElement>(null)
   const map = useRef<maplibregl.Map | null>(null)
   const popup = useRef<maplibregl.Popup | null>(null)
   const data = useRef<Point[]>([])
-  const [snapshot, setSnapshot] = useState<TableViewSnapshot | null>(null)
+  const [snapshot, setSnapshot] = useState<EidosTableSnapshot | null>(null)
   const [config, setConfig] = useState<Config>({
     latitude: "",
     longitude: "",
@@ -125,13 +125,13 @@ function MapView({ table }: { table: TableContext }) {
   const report = (cause: unknown) =>
     setError(cause instanceof Error ? cause.message : String(cause))
   useEffect(() => {
-    const observation = table.observe(() => setRevision((value) => value + 1))
+    const observation = table.watch(() => setRevision((value) => value + 1))
     return () => observation.dispose()
   }, [table])
   useEffect(() => {
     let active = true
     void table
-      .read()
+      .readContext()
       .then((value) => {
         if (active) {
           setSnapshot(value)
@@ -165,7 +165,7 @@ function MapView({ table }: { table: TableContext }) {
       let invalid = 0,
         count = 0
       for (let offset = 0; offset < 50000; offset += 1000) {
-        const page = await table.getPage({ offset, limit: 1000 })
+        const page = await table.readRows({ offset, limit: 1000 })
         if (!active) return
         count = page.total
         for (const row of page.rows) {
@@ -447,7 +447,7 @@ function MapView({ table }: { table: TableContext }) {
   )
 }
 const mount: Mount = (ctx, element) => {
-  const table = ctx.table
+  const table = ctx.capabilities.eidos?.table
   if (!table) throw new Error("Map requires a table view")
   const root = createRoot(element)
   root.render(<MapView table={table} />)

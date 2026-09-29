@@ -1,5 +1,5 @@
-# Map 0.2.0
+# Map 0.3.0
 
-Map now supports Eidos Lite 0.19.0 and plugin API 2.0. Existing table views and their field and basemap settings remain in the Eidos File when you replace the plugin package.
+Requires Eidos Lite 0.20.0 or later and Plugin API 3. Update Lite before installing this package.
 
-Install this version with Eidos Lite 0.19.0 or later. Online maps use OpenFreeMap; the bundled world outline remains available offline. Record data is not uploaded to the map provider.
+Table data and view settings use the Eidos table capability. Existing field selections and basemap settings remain in the Eidos File. Offline maps and the sandboxed MapLibre worker remain supported. CLI Serve requires Eidos CLI 3.0.0 or later.

@@ -4,9 +4,9 @@ A React + MapLibre GL JS table view for Eidos Lite.
 
 ## Install
 
-Map 0.2.0 requires Eidos Lite 0.19.0 or later and plugin API 2.0.0.
+Map 0.3.0 requires plugin API 3.0.0, supported by Eidos Lite 0.20.0 and Eidos CLI 3.0.0 or later. In CLI Serve, install the plugin with `eidos plugin install` and add a Map view from the table's view menu.
 
-1. Download `eidos.map-0.2.0.eidos-plugin` from [GitHub Releases](https://github.com/eidos-space/eidos-map-plugin/releases).
+1. Download `eidos.map-0.3.0.eidos-plugin` from [GitHub Releases](https://github.com/eidos-space/eidos-map-plugin/releases).
 2. In Eidos Lite, open **Plugins → Install plugin…** and select the downloaded file.
 3. Enable Map in your Space, open an `.eidos` table and choose **New view → Map**.
 
@@ -32,7 +32,7 @@ npm test
 npm run pack:plugin
 ```
 
-Requires Node.js 22 or later. The standalone build emits the standard gzip/JSON `.eidos-plugin` envelope, bundled JavaScript/CSS and `SHA256SUMS` into `dist/`. The SDK import is type-only; React and MapLibre are bundled per plugin. The build uses published `@eidos.space/plugin-sdk` and `@eidos.space/plugin-tools` 0.4.0. No Eidos repository checkout is needed to build.
+Requires Node.js 22 or later. The standalone build emits the standard gzip/JSON `.eidos-plugin` envelope, bundled JavaScript/CSS and `SHA256SUMS` into `dist/`. The SDK import is type-only; React and MapLibre are bundled per plugin. The build uses published `@eidos.space/plugin-sdk` and `@eidos.space/plugin-tools` 0.5.0. No Eidos repository checkout is needed to build.
 
 ## Release
 
