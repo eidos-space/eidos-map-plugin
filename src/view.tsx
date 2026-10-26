@@ -1,3 +1,4 @@
+import { I18nContext, usePluginI18n } from "./i18n"
 import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 import * as maplibregl from "maplibre-gl"
@@ -104,6 +105,8 @@ function initialConfig(snapshot: EidosTableSnapshot): Config {
   }
 }
 function MapView({ table }: { table: EidosTable }) {
+  const i18n = usePluginI18n()
+  const t = i18n.t
   const container = useRef<HTMLDivElement>(null)
   const map = useRef<maplibregl.Map | null>(null)
   const popup = useRef<maplibregl.Popup | null>(null)
@@ -302,7 +305,8 @@ function MapView({ table }: { table: EidosTable }) {
 
       const title = document.createElement("div")
       title.className = "map-popup-title"
-      title.textContent = String(selected.properties.label || "Record")
+      title.textContent = String(selected.properties.label || t("ui.record"))
+      if (!selected.properties.label) title.dataset.mapText = "ui.record"
 
       const coords = document.createElement("div")
       coords.className = "map-popup-coords"
@@ -311,7 +315,8 @@ function MapView({ table }: { table: EidosTable }) {
 
       const button = document.createElement("button")
       button.className = "map-popup-btn"
-      button.textContent = "Open record →"
+      button.textContent = t("ui.openRecord")
+      button.dataset.mapText = "ui.openRecord"
       button.addEventListener("click", () => {
         void table.openRecord(String(selected.properties.id)).catch(report)
       })
@@ -340,8 +345,28 @@ function MapView({ table }: { table: EidosTable }) {
     }
   }, [table])
   useEffect(() => {
+    const update = () => {
+      for (const [selector, key] of [
+        [".maplibregl-ctrl-zoom-in", "ui.zoomIn"],
+        [".maplibregl-ctrl-zoom-out", "ui.zoomOut"],
+        [".maplibregl-popup-close-button", "ui.closePopup"],
+      ]) {
+        const button = container.current?.querySelector<HTMLElement>(selector!)
+        if (button) { button.title = t(key!); button.setAttribute("aria-label", t(key!)) }
+      }
+      container.current?.querySelectorAll<HTMLElement>("[data-map-text]").forEach(node => {
+        const label = t(node.dataset.mapText!)
+        if (node.textContent !== label) node.textContent = label
+      })
+    }
+    update()
+    const observer = new MutationObserver(update)
+    if (container.current) observer.observe(container.current, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [i18n.locale])
+  useEffect(() => {
     const instance = map.current
-    if (!instance) return
+    if (!instance || !snapshot) return
     let failed = false
     setNotice("")
     const localStyle = offlineStyle
@@ -373,7 +398,7 @@ function MapView({ table }: { table: EidosTable }) {
       instance.off("error", fallback)
       theme.disconnect()
     }
-  }, [config.basemap])
+  }, [config.basemap, !!snapshot])
   useEffect(() => {
     data.current = points
     const source = map.current?.getSource("records") as
@@ -393,31 +418,30 @@ function MapView({ table }: { table: EidosTable }) {
       <div className="canvas">
         <div ref={container} className="map" />
         <button className="fit-control" disabled={!points.length} onClick={fit}>
-          Fit all
+          {t("ui.fit")}
         </button>
         <div className="map-messages">
           {error && (
             <div className="message" role="alert">
               {error}
               <button onClick={() => setRevision((value) => value + 1)}>
-                Retry
+                {t("ui.retry")}
               </button>
             </div>
           )}
           {notice && (
             <div className="message" role="status">
-              {notice}
+              {notice === "Online basemap unavailable · showing world outline" ? t("ui.offlineNotice") : notice}
             </div>
           )}
           {total > 50000 && (
             <div className="message">
-              Showing the first 50,000 matching records. Use filters to narrow
-              the map.
+              {t("ui.limit")}
             </div>
           )}
           {skipped > 0 && (
             <div className="message">
-              {skipped} records without valid coordinates
+              {t("ui.skipped", { count: skipped })}
             </div>
           )}
         </div>
@@ -436,9 +460,9 @@ function MapView({ table }: { table: EidosTable }) {
               <line x1="9" y1="3" x2="9" y2="18" />
               <line x1="15" y1="6" x2="15" y2="21" />
             </svg>
-            <div className="map-empty-title">Location Fields Required</div>
+            <div className="map-empty-title">{t("ui.fieldsRequired")}</div>
             <div className="map-empty-desc">
-              Select the Latitude and Longitude fields in the host’s View settings to map your records.
+              {t("ui.chooseFields")}
             </div>
           </div>
         )}
@@ -448,9 +472,9 @@ function MapView({ table }: { table: EidosTable }) {
 }
 const mount: Mount = (ctx, element) => {
   const table = ctx.capabilities.eidos?.table
-  if (!table) throw new Error("Map requires a table view")
+  if (!table) throw new Error(ctx.i18n.t("ui.tableRequired"))
   const root = createRoot(element)
-  root.render(<MapView table={table} />)
+  root.render(<I18nContext.Provider value={ctx.i18n}><MapView table={table} /></I18nContext.Provider>)
   return { dispose: () => root.unmount() }
 }
 export default mount

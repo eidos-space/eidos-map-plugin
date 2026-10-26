@@ -3,6 +3,7 @@ import { readFile, mkdir, writeFile } from "node:fs/promises"
 import { gzipSync, gunzipSync } from "node:zlib"
 import { createHash } from "node:crypto"
 import assert from "node:assert/strict"
+import { decodePackage } from "@eidos.space/plugin-tools/dist/compiler.js"
 
 const manifest = JSON.parse(await readFile("plugin.json", "utf8"))
 const pkg = JSON.parse(await readFile("package.json", "utf8"))
@@ -39,11 +40,15 @@ for (const view of manifest.views) {
   if (css) code = `const style=document.createElement('style');style.textContent=${JSON.stringify(css)};document.head.append(style);\n${code}`
   modules[view.entry] = code
 }
-const envelope = { format: 2, manifest, modules }
+const resources = {}
+for (const resource of new Set([...Object.values(manifest.i18n?.messages ?? {}), ...Object.values(manifest.i18n?.readme ?? {})]))
+  resources[resource] = await readFile(resource, "utf8")
+const envelope = { format: 3, manifest, modules, resources }
 const raw = Buffer.from(JSON.stringify(envelope))
 assert(raw.length <= 16 * 1024 * 1024, "Package exceeds host limit")
 const bytes = gzipSync(raw, { level: 9 })
 assert.deepEqual(JSON.parse(gunzipSync(bytes).toString()), envelope)
+decodePackage(bytes)
 await mkdir("dist", { recursive: true })
 const name = `${manifest.id}-${manifest.version}.eidos-plugin`
 await writeFile(`dist/${name}`, bytes)

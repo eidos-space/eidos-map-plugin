@@ -1,0 +1,23 @@
+{
+  "plugin.name": "Map",
+  "plugin.description": "Explore table records on a MapLibre map using latitude and longitude fields.",
+  "views.map.title": "Map",
+  "views.map.latitude.title": "Latitude",
+  "views.map.longitude.title": "Longitude",
+  "views.map.label.title": "Title",
+  "views.map.basemap.title": "Basemap",
+  "views.map.basemap.description": "Online uses OpenFreeMap. Offline shows world outlines without street detail.",
+  "ui.record": "Record",
+  "ui.openRecord": "Open record →",
+  "ui.fit": "Fit all",
+  "ui.retry": "Retry",
+  "ui.offlineNotice": "Online basemap unavailable · showing world outline",
+  "ui.limit": "Showing the first 50,000 matching records. Use filters to narrow the map.",
+  "ui.skipped": "{count} records without valid coordinates",
+  "ui.fieldsRequired": "Location fields required",
+  "ui.chooseFields": "Select Latitude and Longitude fields in View settings to map your records.",
+  "ui.tableRequired": "Map requires a table View",
+  "ui.zoomIn": "Zoom in",
+  "ui.zoomOut": "Zoom out",
+  "ui.closePopup": "Close popup"
+}
