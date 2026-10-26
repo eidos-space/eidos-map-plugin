@@ -1,0 +1,23 @@
+{
+  "plugin.name": "地图",
+  "plugin.description": "使用经纬度字段在 MapLibre 地图中浏览表格记录。",
+  "views.map.title": "地图",
+  "views.map.latitude.title": "纬度",
+  "views.map.longitude.title": "经度",
+  "views.map.label.title": "标题",
+  "views.map.basemap.title": "底图",
+  "views.map.basemap.description": "在线模式使用 OpenFreeMap，离线模式仅显示世界轮廓，不含街道细节。",
+  "ui.record": "记录",
+  "ui.openRecord": "打开记录 →",
+  "ui.fit": "显示全部",
+  "ui.retry": "重试",
+  "ui.offlineNotice": "在线底图不可用 · 显示世界轮廓",
+  "ui.limit": "仅显示前 50,000 条匹配记录，请通过筛选缩小范围。",
+  "ui.skipped": "{count} 条记录缺少有效坐标",
+  "ui.fieldsRequired": "需要位置字段",
+  "ui.chooseFields": "请在视图设置中选择经度和纬度字段，以在地图上显示记录。",
+  "ui.tableRequired": "地图需要绑定表格视图",
+  "ui.zoomIn": "放大",
+  "ui.zoomOut": "缩小",
+  "ui.closePopup": "关闭弹窗"
+}

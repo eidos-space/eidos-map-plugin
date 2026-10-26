@@ -1,11 +1,11 @@
 {
   "apiVersion": 1,
   "requires": {
-    "pluginApi": "3.0.0"
+    "pluginApi": "3.7.0"
   },
   "id": "eidos.map",
-  "name": "Map",
-  "version": "0.3.0",
+  "name": "%plugin.name%",
+  "version": "0.4.0",
   "icon": {
     "paths": [
       "M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z",
@@ -22,7 +22,7 @@
   "views": [
     {
       "id": "map",
-      "title": "Map",
+      "title": "%views.map.title%",
       "entry": "./src/view.tsx",
       "access": "read",
       "icon": {
@@ -36,31 +36,31 @@
         "properties": {
           "latitude": {
             "type": "string",
-            "title": "Latitude",
+            "title": "%views.map.latitude.title%",
             "default": "",
             "x-field": true
           },
           "longitude": {
             "type": "string",
-            "title": "Longitude",
+            "title": "%views.map.longitude.title%",
             "default": "",
             "x-field": true
           },
           "label": {
             "type": "string",
-            "title": "Title",
+            "title": "%views.map.label.title%",
             "default": "",
             "x-field": true
           },
           "basemap": {
             "type": "string",
-            "title": "Basemap",
+            "title": "%views.map.basemap.title%",
             "default": "online",
             "enum": [
               "online",
               "offline"
             ],
-            "description": "Online uses OpenFreeMap. Offline shows world outlines without street detail."
+            "description": "%views.map.basemap.description%"
           }
         }
       },
@@ -75,5 +75,17 @@
       "location": "table/view",
       "view": "map"
     }
-  ]
+  ],
+  "description": "%plugin.description%",
+  "i18n": {
+    "defaultLocale": "en",
+    "messages": {
+      "en": "./locales/en.json",
+      "zh-CN": "./locales/zh-CN.json"
+    },
+    "readme": {
+      "en": "./README.md",
+      "zh-CN": "./README.zh-CN.md"
+    }
+  }
 }
